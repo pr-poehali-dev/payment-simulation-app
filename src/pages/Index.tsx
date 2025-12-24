@@ -76,12 +76,13 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
+      <div className="mb-6 flex items-center justify-center w-20 h-20 rounded-2xl bg-card shadow-lg animate-fade-in">
+        <Icon name="Car" className="text-foreground" size={40} />
+      </div>
+      
       <Card className="w-full max-w-md p-8 animate-fade-in shadow-lg">
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            <Icon name="CreditCard" className="text-primary" size={32} />
-          </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">TripPay</h1>
           <p className="text-muted-foreground text-sm">Оплата поездки</p>
         </div>
