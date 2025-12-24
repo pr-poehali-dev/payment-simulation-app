@@ -1,168 +1,113 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
-import { toast } from 'sonner';
-
-const banks = [
-  { id: 'sber', name: 'Сбербанк', icon: 'Building2' },
-  { id: 'tinkoff', name: 'Тинькофф', icon: 'Landmark' },
-  { id: 'alpha', name: 'Альфа-Банк', icon: 'Building' },
-  { id: 'vtb', name: 'ВТБ', icon: 'University' },
-  { id: 'raiffeisen', name: 'Райффайзен', icon: 'Building2' },
-];
 
 const Index = () => {
-  const [driverName, setDriverName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [bank, setBank] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(true);
 
-  const handlePayment = () => {
-    if (!driverName || !amount || !bank) {
-      toast.error('Заполните все поля');
-      return;
-    }
-
-    setIsProcessing(true);
-    
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsSuccess(true);
-      
-      setTimeout(() => {
-        setIsSuccess(false);
-        setDriverName('');
-        setAmount('');
-        setBank('');
-      }, 3000);
-    }, 2000);
+  const handleClose = () => {
+    setShowSuccess(false);
   };
 
-  if (isSuccess) {
+  if (!showSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-sm text-center">
-          <div className="mb-8 flex justify-center">
-            <div className="w-16 h-16 rounded-full bg-[#ef3124] flex items-center justify-center">
-              <Icon name="Check" className="text-white" size={32} />
-            </div>
-          </div>
-          <h2 className="text-2xl font-semibold mb-3 text-foreground">Готово</h2>
-          <p className="text-muted-foreground text-base mb-2">
-            {amount} ₽
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Водитель {driverName}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isProcessing) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-sm text-center">
-          <div className="mb-8 flex justify-center">
-            <div className="w-12 h-12 border-4 border-[#ef3124] border-t-transparent rounded-full animate-spin-slow"></div>
-          </div>
-          <h2 className="text-xl font-medium text-foreground">Оплата...</h2>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center">
+          <p className="text-muted-foreground">Форма оплаты</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-sm mx-auto pt-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-1">
-            <div className="w-10 h-10 rounded-xl bg-[#ef3124] flex items-center justify-center">
-              <Icon name="Car" className="text-white" size={24} />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground">TripPay</h1>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-2xl mx-auto p-4">
+        <button 
+          onClick={handleClose}
+          className="p-2 mb-8 hover:bg-secondary rounded-lg transition-colors"
+        >
+          <Icon name="X" size={28} className="text-muted-foreground" />
+        </button>
+
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-semibold mb-3">Перевод выполнен</h1>
+          <p className="text-muted-foreground text-lg">Счёт списания ··1234</p>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <div className="bg-secondary px-6 py-3 rounded-2xl">
+            <span className="text-2xl font-medium">900 ₽</span>
+          </div>
+          <Icon name="ArrowRight" size={24} className="text-muted-foreground" />
+          <div className="bg-secondary px-6 py-3 rounded-2xl flex items-center gap-2">
+            <span className="text-2xl font-medium">860 ₽</span>
+            <Icon name="EyeOff" size={20} className="text-muted-foreground" />
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div>
-            <Label htmlFor="amount" className="text-sm text-muted-foreground mb-2 block">
-              Сумма
-            </Label>
+        <div className="bg-card rounded-[2rem] p-8 relative">
+          <div className="absolute -top-16 left-1/2 -translate-x-1/2">
             <div className="relative">
-              <Input
-                id="amount"
-                type="number"
-                placeholder="0"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="h-14 text-2xl font-medium pr-12 border-0 bg-input focus-visible:ring-1"
-              />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-muted-foreground">₽</span>
+              <div className="w-32 h-32 bg-primary rounded-[2rem] flex items-center justify-center shadow-xl">
+                <Icon name="Check" size={64} className="text-white" strokeWidth={3} />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-background rounded-full flex items-center justify-center border-4 border-card">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-red-500 via-purple-500 to-blue-500"></div>
+              </div>
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="driver" className="text-sm text-muted-foreground mb-2 block">
-              Имя водителя
-            </Label>
-            <Input
-              id="driver"
-              placeholder="Иван Иванов"
-              value={driverName}
-              onChange={(e) => setDriverName(e.target.value)}
-              className="h-12 text-base border-0 bg-input focus-visible:ring-1"
-            />
-          </div>
+          <div className="mt-20 text-center">
+            <div className="text-5xl font-bold mb-4">-40 ₽</div>
+            <div className="text-muted-foreground text-lg mb-8">Без комиссии</div>
 
-          <div>
-            <Label className="text-sm text-muted-foreground mb-3 block">
-              Способ оплаты
-            </Label>
-            <div className="space-y-2">
-              {banks.map((bankItem) => (
-                <button
-                  key={bankItem.id}
-                  type="button"
-                  onClick={() => setBank(bankItem.id)}
-                  className={`w-full p-4 rounded-xl transition-all duration-150 flex items-center gap-3 ${
-                    bank === bankItem.id
-                      ? 'bg-[#ef3124] text-white shadow-md'
-                      : 'bg-input hover:bg-secondary'
-                  }`}
-                >
-                  <Icon 
-                    name={bankItem.icon as any} 
-                    size={20} 
-                    className={bank === bankItem.id ? 'text-white' : 'text-muted-foreground'} 
-                  />
-                  <span className={`text-base font-medium ${bank === bankItem.id ? 'text-white' : 'text-foreground'}`}>
-                    {bankItem.name}
-                  </span>
-                  {bank === bankItem.id && (
-                    <Icon name="Check" className="ml-auto text-white" size={20} />
-                  )}
-                </button>
-              ))}
+            <div className="mb-8">
+              <div className="text-2xl font-semibold mb-2">Руслан Туйчибекович С.</div>
+              <div className="text-muted-foreground">В Сбербанк через СБП по номеру</div>
+              <div className="text-muted-foreground">+7 996 588-12-34</div>
+            </div>
+
+            <div className="flex justify-center gap-8 mb-8">
+              <button className="flex flex-col items-center gap-2 hover:opacity-80 transition-opacity">
+                <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center">
+                  <Icon name="Receipt" size={24} className="text-foreground" />
+                </div>
+                <span className="text-sm">Квитанция</span>
+              </button>
+
+              <button className="flex flex-col items-center gap-2 hover:opacity-80 transition-opacity">
+                <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center">
+                  <Icon name="Star" size={24} className="text-foreground" />
+                </div>
+                <span className="text-sm">Шаблон</span>
+              </button>
+
+              <button className="flex flex-col items-center gap-2 hover:opacity-80 transition-opacity">
+                <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center">
+                  <Icon name="Clock" size={24} className="text-foreground" />
+                </div>
+                <span className="text-sm">Автоплатеж</span>
+              </button>
+            </div>
+
+            <div className="bg-secondary/50 rounded-2xl p-4 flex items-center gap-3 hover:bg-secondary transition-colors cursor-pointer">
+              <div className="text-4xl">💸</div>
+              <div className="flex-1 text-left">
+                <div className="text-sm leading-tight">
+                  Когда все в Альфа-Банке, переводы удобнее: зовите близких, получите до 7000 ₽ за совет
+                </div>
+              </div>
+              <Icon name="ChevronRight" size={20} className="text-muted-foreground" />
             </div>
           </div>
-
-          <Button 
-            onClick={handlePayment}
-            className="w-full h-14 text-base font-semibold mt-8 bg-[#ef3124] hover:bg-[#d62b1f] text-white rounded-xl shadow-lg"
-            size="lg"
-          >
-            Оплатить
-          </Button>
         </div>
 
-        <p className="text-xs text-muted-foreground text-center mt-8">
-          Демонстрационный режим
-        </p>
+        <Button 
+          onClick={handleClose}
+          className="w-full h-14 text-lg font-medium mt-8 bg-secondary hover:bg-muted text-foreground rounded-2xl"
+        >
+          Готово
+        </Button>
       </div>
     </div>
   );
