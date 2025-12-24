@@ -3,9 +3,16 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+
+const banks = [
+  { id: 'sber', name: 'Сбербанк', icon: 'Building2' },
+  { id: 'tinkoff', name: 'Тинькофф', icon: 'Landmark' },
+  { id: 'alpha', name: 'Альфа-Банк', icon: 'Building' },
+  { id: 'vtb', name: 'ВТБ', icon: 'University' },
+  { id: 'raiffeisen', name: 'Райффайзен', icon: 'Building2' },
+];
 
 const Index = () => {
   const [driverName, setDriverName] = useState('');
@@ -114,25 +121,29 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="bank" className="text-foreground font-medium">
+          <div className="space-y-3">
+            <Label className="text-foreground font-medium">
               Выберите банк
             </Label>
-            <Select value={bank} onValueChange={setBank}>
-              <SelectTrigger className="h-12 text-base" id="bank">
-                <div className="flex items-center gap-2">
-                  <Icon name="Building2" className="text-muted-foreground" size={20} />
-                  <SelectValue placeholder="Выберите банк" />
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="sber">Сбербанк</SelectItem>
-                <SelectItem value="tinkoff">Тинькофф</SelectItem>
-                <SelectItem value="alpha">Альфа-Банк</SelectItem>
-                <SelectItem value="vtb">ВТБ</SelectItem>
-                <SelectItem value="raiffeisen">Райффайзен</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="grid grid-cols-2 gap-3">
+              {banks.map((bankItem) => (
+                <button
+                  key={bankItem.id}
+                  type="button"
+                  onClick={() => setBank(bankItem.id)}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    bank === bankItem.id
+                      ? 'border-primary bg-primary/10'
+                      : 'border-border bg-secondary hover:border-primary/50'
+                  }`}
+                >
+                  <Icon name={bankItem.icon as any} size={24} className={bank === bankItem.id ? 'text-primary' : 'text-muted-foreground'} />
+                  <span className={`text-sm font-medium ${bank === bankItem.id ? 'text-foreground' : 'text-muted-foreground'}`}>
+                    {bankItem.name}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
 
           <Button 
